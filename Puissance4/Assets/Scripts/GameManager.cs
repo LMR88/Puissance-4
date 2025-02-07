@@ -1,19 +1,16 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public SpriteRenderer[] board = new SpriteRenderer[42];
-
     private TokenState[,] visualBoard = new TokenState[6, 7];
-
+    public TokenState currentPlayerState = TokenState.Yellow;
     public static GameManager Instance;
-
     public Sprite yellowToken;
     public Sprite redToken;
-
     public Image tokenDisplay;
     public Sprite player1Sprite;
     public Sprite player2Sprite;
@@ -24,8 +21,6 @@ public class GameManager : MonoBehaviour
         Yellow,
         Red
     }
-
-    public TokenState currentPlayerState = TokenState.Yellow;
 
     private void Awake()
     {
@@ -55,17 +50,25 @@ public class GameManager : MonoBehaviour
 
     public void AddToken(int columnNb)
     {
-        Debug.Log(columnNb);
         for (int i = 0; i < 6; i++)
         {
             if (visualBoard[i, columnNb] == TokenState.Empty)
             {
                 visualBoard[i, columnNb] = currentPlayerState;
                 DisplayToken(board[columnNb + 7 * i], currentPlayerState);
-                if (isWin())
+                
+                if (IsWin())
                 {
-                    Debug.Log((currentPlayerState + "win"));
+                    Debug.Log(currentPlayerState + " wins!");
+                    return;
                 }
+                
+                if (IsDraw())
+                {
+                    Debug.Log("Match nul !");
+                    return;
+                }
+                
                 SwitchPlayer();
                 return;
             }
@@ -83,58 +86,53 @@ public class GameManager : MonoBehaviour
     private void SwitchPlayer()
     {
         currentPlayerState = currentPlayerState == TokenState.Yellow ? TokenState.Red : TokenState.Yellow;
-
-        tokenDisplay.sprite = currentPlayerState == TokenState.Yellow ? player1Sprite : player2Sprite ;
+        tokenDisplay.sprite = currentPlayerState == TokenState.Yellow ? player1Sprite : player2Sprite;
     }
 
-
-    bool isWin()
+    private bool IsWin()
     {
         for (int i = 0; i < 6; i++)
         {
-            for (int j = 0; j < 7 - 4; j++)
+            for (int j = 0; j < 4; j++)
             {
-                if (visualBoard[i, j] == currentPlayerState && visualBoard[i, j + 1] == currentPlayerState && visualBoard[i, j + 2] == currentPlayerState &&
-                    visualBoard[i, j + 3] == currentPlayerState)
+                if (visualBoard[i, j] == currentPlayerState && visualBoard[i, j + 1] == currentPlayerState && 
+                    visualBoard[i, j + 2] == currentPlayerState && visualBoard[i, j + 3] == currentPlayerState)
                 {
                     return true;
                 }
             }
         }
 
-        // Vérification verticale 
-        for (int i = 0; i <= 6 - 4; i++)
+        for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 7; j++)
             {
-                if (visualBoard[i, j] == currentPlayerState && visualBoard[i + 1, j] == currentPlayerState && visualBoard[i + 2, j] == currentPlayerState &&
-                    visualBoard[i + 3, j] == currentPlayerState)
+                if (visualBoard[i, j] == currentPlayerState && visualBoard[i + 1, j] == currentPlayerState && 
+                    visualBoard[i + 2, j] == currentPlayerState && visualBoard[i + 3, j] == currentPlayerState)
                 {
                     return true;
                 }
             }
         }
 
-        // Vérification diagonale (\)
-        for (int i = 0; i <= 6 - 4; i++)
+        for (int i = 0; i < 3; i++)
         {
-            for (int j = 0; j <= 7 - 4; j++)
+            for (int j = 0; j < 4; j++)
             {
-                if (visualBoard[i, j] == currentPlayerState && visualBoard[i + 1, j + 1] == currentPlayerState && visualBoard[i + 2, j + 2] == currentPlayerState &&
-                    visualBoard[i + 3, j + 3] == currentPlayerState)
+                if (visualBoard[i, j] == currentPlayerState && visualBoard[i + 1, j + 1] == currentPlayerState && 
+                    visualBoard[i + 2, j + 2] == currentPlayerState && visualBoard[i + 3, j + 3] == currentPlayerState)
                 {
                     return true;
                 }
             }
         }
 
-        // Vérification diagonale (/)
-        for (int i = 0; i <= 6 - 4; i++)
+        for (int i = 0; i < 3; i++)
         {
             for (int j = 3; j < 7; j++)
             {
-                if (visualBoard[i, j] == currentPlayerState && visualBoard[i + 1, j - 1] == currentPlayerState && visualBoard[i + 2, j - 2] == currentPlayerState &&
-                    visualBoard[i + 3, j - 3] == currentPlayerState)
+                if (visualBoard[i, j] == currentPlayerState && visualBoard[i + 1, j - 1] == currentPlayerState && 
+                    visualBoard[i + 2, j - 2] == currentPlayerState && visualBoard[i + 3, j - 3] == currentPlayerState)
                 {
                     return true;
                 }
@@ -143,6 +141,25 @@ public class GameManager : MonoBehaviour
 
         return false;
     }
+
+    private bool IsDraw()
+    {
+        for (int col = 0; col < 7; col++)
+        {
+            if (visualBoard[5, col] == TokenState.Empty)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void ReloadGame()
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
+    }
 }
+
 
    
