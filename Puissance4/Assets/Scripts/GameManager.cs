@@ -1,4 +1,7 @@
 using System;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -14,6 +17,7 @@ public class GameManager : MonoBehaviour
     public Image tokenDisplay;
     public Sprite player1Sprite;
     public Sprite player2Sprite;
+    public TMP_Text Win;
 
     public enum TokenState
     {
@@ -59,7 +63,8 @@ public class GameManager : MonoBehaviour
                 
                 if (IsWin())
                 {
-                    Debug.Log(currentPlayerState + " wins!");
+                    Win.text = currentPlayerState + " win";
+                    Win.GameObject().SetActive(true);
                     return;
                 }
                 
@@ -157,7 +162,12 @@ public class GameManager : MonoBehaviour
     public void ReloadGame()
     {
         Scene scene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(scene.name);
+        SceneManager.LoadScene(1);
+    }
+
+    public void Menu()
+    {
+        SceneManager.LoadScene(0);
     }
 }
 
