@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Ia : MonoBehaviour
 {
-    [SerializeField] private GameManager gameManagerReference;
+    [SerializeField] private GameManagerIanulle gameManagerReference;
     [SerializeField] private int waitForIaPlay;
 
     public void IaTurn()

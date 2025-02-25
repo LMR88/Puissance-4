@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManagerIavsIa : MonoBehaviour
 {
     public SpriteRenderer[] board = new SpriteRenderer[42];
     public TokenState[,] visualBoard = new TokenState[6, 7];
@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     private Stack<(int, int, TokenState)> redoStack = new Stack<(int, int, TokenState)>();
     public bool haveIa;
     public TokenState currentPlayerState = TokenState.Yellow;
-    public static GameManager Instance;
+    public static GameManagerIavsIa Instance;
     public Sprite yellowToken;
     public Sprite redToken;
     public Image tokenDisplay;
@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     public Sprite player2Sprite;
     public TMP_Text Win;
     public TMP_Text matchNul;
-    public Connect4AI iaReference;
+    public IavsIa iaReference;
     public bool iaTurnToPlay;
 
     public enum TokenState
@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
                     return;
                 }
 
-                iaTurnToPlay = !iaTurnToPlay;
+                //iaTurnToPlay = !iaTurnToPlay;
                 SwitchPlayer();
                 return;
             }
@@ -144,12 +144,12 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
-    public void ReloadGame()
+    public void Reload()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void Menu()
+    public void ReturnMenu()
     {
         SceneManager.LoadScene(0);
     }
@@ -213,3 +213,4 @@ public class GameManager : MonoBehaviour
 }
 
     
+

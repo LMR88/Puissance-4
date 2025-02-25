@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManagerIanulle : MonoBehaviour
 {
     public SpriteRenderer[] board = new SpriteRenderer[42];
     public TokenState[,] visualBoard = new TokenState[6, 7];
@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     private Stack<(int, int, TokenState)> redoStack = new Stack<(int, int, TokenState)>();
     public bool haveIa;
     public TokenState currentPlayerState = TokenState.Yellow;
-    public static GameManager Instance;
+    public static GameManagerIanulle Instance;
     public Sprite yellowToken;
     public Sprite redToken;
     public Image tokenDisplay;
@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     public Sprite player2Sprite;
     public TMP_Text Win;
     public TMP_Text matchNul;
-    public Connect4AI iaReference;
+    public Ia iaReference;
     public bool iaTurnToPlay;
 
     public enum TokenState
@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
         currentPlayerState = currentPlayerState == TokenState.Yellow ? TokenState.Red : TokenState.Yellow;
         if (haveIa && iaTurnToPlay)
         {
-            iaReference.PlayBestMove();
+            iaReference.IaTurn();
         }
         tokenDisplay.sprite = currentPlayerState == TokenState.Yellow ? player1Sprite : player2Sprite;
     }
