@@ -81,8 +81,7 @@ public class GameManagerIavsIa : MonoBehaviour
                     matchNul.gameObject.SetActive(true);
                     return;
                 }
-
-                //iaTurnToPlay = !iaTurnToPlay;
+                
                 SwitchPlayer();
                 return;
             }
